@@ -30,7 +30,7 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("Enterd the data ingestion method or componets")
         try:
-            df = pd.read_csv(r'notebooks\Model\data_for_predictions.csv')
+            df = pd.read_csv(r'D:\My projects\Customer Churn 2.O\notebooks\Data\client_new.csv')
             logging.info("read the dataset as dataframe")
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)

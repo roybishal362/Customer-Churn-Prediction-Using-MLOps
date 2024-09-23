@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Customer Churn Prediction</h2>
+        <form action="/predict" method="POST">
+            <!-- Existing features -->
+            <div class="mb-3">
+                <label for="cons_12m" class="form-label">Consumption (12 months)</label>
+                <input type="number" class="form-control" id="cons_12m" name="cons_12m" required>
+            </div>
+            <div class="mb-3">
+                <label for="cons_gas_12m" class="form-label">Gas Consumption (12 months)</label>
+                <input type="number" class="form-control" id="cons_gas_12m" name="cons_gas_12m" required>
+            </div>
+            <div class="mb-3">
+                <label for="cons_last_month" class="form-label">Consumption (Last Month)</label>
+                <input type="number" class="form-control" id="cons_last_month" name="cons_last_month" required>
+            </div>
+            <div class="mb-3">
+                <label for="date_activ" class="form-label">Activation Date</label>
+                <input type="date" class="form-control" id="date_activ" name="date_activ" required>
+            </div>
+            <div class="mb-3">
+                <label for="date_end" class="form-label">Contract End Date</label>
+                <input type="date" class="form-control" id="date_end" name="date_end" required>
+            </div>
+            <div class="mb-3">
+                <label for="pow_max" class="form-label">Max Power (kW)</label>
+                <input type="number" class="form-control" id="pow_max" name="pow_max" step="0.001" required>
+            </div>
+
+            <!-- Additional missing fields -->
+            <div class="mb-3">
+                <label for="date_modif_prod" class="form-label">Date of Last Product Modification</label>
+                <input type="date" class="form-control" id="date_modif_prod" name="date_modif_prod" required>
+            </div>
+            <div class="mb-3">
+                <label for="date_renewal" class="form-label">Date of Renewal</label>
+                <input type="date" class="form-control" id="date_renewal" name="date_renewal" required>
+            </div>
+            <div class="mb-3">
+                <label for="forecast_cons_12m" class="form-label">Forecast Consumption (12 months)</label>
+                <input type="number" class="form-control" id="forecast_cons_12m" name="forecast_cons_12m" required>
+            </div>
+            <div class="mb-3">
+                <label for="forecast_cons_year" class="form-label">Forecast Consumption (Year)</label>
+                <input type="number" class="form-control" id="forecast_cons_year" name="forecast_cons_year" required>
+            </div>
+            <div class="mb-3">
+                <label for="forecast_discount_energy" class="form-label">Forecast Discount Energy</label>
+                <input type="number" class="form-control" id="forecast_discount_energy" name="forecast_discount_energy" required>
+            </div>
+            <div class="mb-3">
+                <label for="forecast_meter_rent_12m" class="form-label">Forecast Meter Rent (12 months)</label>
+                <input type="number" class="form-control" id="forecast_meter_rent_12m" name="forecast_meter_rent_12m" required>
+            </div>
+            <div class="mb-3">
+                <label for="forecast_price_energy_off_peak" class="form-label">Forecast Price Energy Off-Peak</label>
+                <input type="number" class="form-control" id="forecast_price_energy_off_peak" name="forecast_price_energy_off_peak" required>
+            </div>
+            <div class="mb-3">
+                <label for="forecast_price_energy_peak" class="form-label">Forecast Price Energy Peak</label>
+                <input type="number" class="form-control" id="forecast_price_energy_peak" name="forecast_price_energy_peak" required>
+            </div>
+            <div class="mb-3">
+                <label for="forecast_price_pow_off_peak" class="form-label">Forecast Price Power Off-Peak</label>
+                <input type="number" class="form-control" id="forecast_price_pow_off_peak" name="forecast_price_pow_off_peak" required>
+            </div>
+            <div class="mb-3">
+                <label for="has_gas" class="form-label">Has Gas (1 for Yes, 0 for No)</label>
+                <input type="number" class="form-control" id="has_gas" name="has_gas" min="0" max="1" required>
+            </div>
+            <div class="mb-3">
+                <label for="imp_cons" class="form-label">Imported Consumption</label>
+                <input type="number" class="form-control" id="imp_cons" name="imp_cons" required>
+            </div>
+            <div class="mb-3">
+                <label for="margin_gross_pow_ele" class="form-label">Margin Gross Power Electricity</label>
+                <input type="number" class="form-control" id="margin_gross_pow_ele" name="margin_gross_pow_ele" required>
+            </div>
+            <div class="mb-3">
+                <label for="margin_net_pow_ele" class="form-label">Margin Net Power Electricity</label>
+                <input type="number" class="form-control" id="margin_net_pow_ele" name="margin_net_pow_ele" required>
+            </div>
+            <div class="mb-3">
+                <label for="nb_prod_act" class="form-label">Number of Active Products</label>
+                <input type="number" class="form-control" id="nb_prod_act" name="nb_prod_act" required>
+            </div>
+            <div class="mb-3">
+                <label for="net_margin" class="form-label">Net Margin</label>
+                <input type="number" class="form-control" id="net_margin" name="net_margin" required>
+            </div>
+            <div class="mb-3">
+                <label for="num_years_antig" class="form-label">Customer Seniority (Years)</label>
+                <input type="number" class="form-control" id="num_years_antig" name="num_years_antig" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Predict Churn</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>Customer Churn Prediction System | © 2024</p>
+    </footer>
+
+</body>
+</html>
